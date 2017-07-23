@@ -4,12 +4,15 @@ outputs some useful reports about what work was done.
 
 This is for fun, and so I can easily remind myself about the algorithms with my own code.
 """
+import argparse
 import datetime
 
 list1 = [14, 33, 27, 10, 35, 19, 42, 44]
 list2 = [0, 56, 73, 12, 5, 99, 19, 65, 27, 30, 2, 66]
 list3 = [42, 23, 4, 16, 8, 15]  # Are you lost?
-ALL_SORTABLES = [list1, list2, list3]
+list4 = [1, 2, 100, 3, 4, 101, 6, 5]
+list5 = [108, 15, 50, 4, 8, 42, 23, 16]
+ALL_SORTABLES = [list1, list2, list3, list4, list5]
 
 
 def bubble_sort(some_list):
@@ -71,9 +74,56 @@ def insertion_sort(some_list):
 
 def merge_sort(some_list):
     """
-    TODO 
+    https://en.wikipedia.org/wiki/Merge_sort
+    Recursively split the array into halves, and then merge the halves back together. This works because you always
+    get to a single element eventually, and merging two single-element lists is trivial (you just order them correctly
+    and merge into a single list).
+    
+    O(n * log(n))
     """
-    pass
+    counter = 0
+    return _merge_sort(some_list, 0, len(some_list), counter)
+
+
+def _merge_sort(some_list, l, r, counter):
+    counter += 1
+    if len(some_list) == 1:  # Base case. Nothing to split.
+        return counter, some_list
+
+    # Split the lists down the middle.
+    middle = (l+r)/2
+    l_list = some_list[l:middle]
+    r_list = some_list[middle:r]
+
+    lcount, lsort = _merge_sort(l_list, 0, len(l_list), counter)
+    rcount, rsort = _merge_sort(r_list, 0, len(r_list), counter)
+
+    return lcount+rcount, _merge(lsort, rsort)
+
+
+def _merge(llist, rlist):
+    ret_list = []
+
+    while llist or rlist:
+        if llist and rlist:  # Both lists non-empty
+
+            # Find which (sorted) sub-list has the smaller val at the front and take it
+            if llist[0] <= rlist[0]:
+                ret_list.append(llist.pop(0))
+            else:
+                ret_list.append(rlist.pop(0))
+
+        elif llist:  # Only left list non-empty
+            ret_list.extend(llist)
+            break
+        elif rlist:  # Only right list non-empty
+            ret_list.extend(rlist)
+            break
+
+        else:        # Both empty. Not possible to hit.
+            break
+
+    return ret_list
 
 
 def selection_sort(some_list):
@@ -100,16 +150,17 @@ def selection_sort(some_list):
     return iters, some_list
 
 
-def main():
+def main(algo):
     """
     Main
     """
-    sorters = [bubble_sort, insertion_sort, selection_sort]
-
     for unsorted in ALL_SORTABLES:
         print(unsorted)
 
         for sorter in sorters:
+            if algo is not None and algo != sorter.__name__:
+                continue
+
             # Sort the thing, and time it.
             start = datetime.datetime.now()
             iters, sorted_list = sorter(list(unsorted))
@@ -128,4 +179,13 @@ def main():
 
 
 if __name__ == "__main__":
-    exit(main())
+    sorters = [bubble_sort, insertion_sort, merge_sort, selection_sort]
+
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("--algo", type=str, default=None, choices=[s.__name__ for s in sorters],
+                        help='Which sorter to use? If this is not specified, all sorters will be run on all inputs.')
+
+    args = parser.parse_args()
+
+    exit(main(args.algo))
