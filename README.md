@@ -3,8 +3,9 @@ A repository of common sorting algorithms done in Python.  It's useful to actual
 
 # Usage
 
-`python sorting.py`
+`python sorting.py --help`
 
+Example run...
 ```
 python sorting.py
 
