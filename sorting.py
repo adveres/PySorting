@@ -39,12 +39,10 @@ def main(algo):
 
             # Make sure it even worked.
             if sorted_list != sorted(unsorted):
-                print("    FAILURE!!! {} did not successfully sort {}.".format(sorter.__name__, unsorted))
-                print("        Got: {}".format(sorted_list))
+                print(f"    FAILURE!!! {sorter.__name__} did not successfully sort {unsorted}.")
+                print(f"        Got: {sorted_list}")
             else:
-                print("    {0: <14} sorted in {1: <3} iterations and took: {2}".format(sorter.__name__,
-                                                                                       iters,
-                                                                                       time_delta))
+                print(f"    {sorter.__name__: <14} sorted in {iters: <3} iterations and took: {time_delta}")
 
         print("")
 
