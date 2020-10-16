@@ -1,0 +1,2 @@
+PrettyTable    # PrettyTable is a simple Python library to represent tabular data in visually appealing ASCII tables.
+               # https://pypi.org/project/PrettyTable/

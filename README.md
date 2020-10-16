@@ -1,15 +1,24 @@
-# PySorting
-A repository of common sorting algorithms done in Python.  It's useful to actually implement the algoritms yourself as a refresher... who really remembers the Big-O complexity off the top of their head?
+PySorting
+===========
+A repository of common sorting algorithms done in Python.  
+It's useful to actually implement the algoritms yourself as a refresher... who really remembers the Big-O complexity off the top of their head?
 
-# Requirements
+## Requirements
 * Python3 (`brew install python3` on OSX)
 
-# Usage
+## Get Going
+```bash
+git clone git@github.com:adveres/PySorting.git
+cd PySorting
+pip install -r requirements.txt --upgrade
+```
+
+## Usage
 
 `python sorting.py --help`
 
 Example run...
-```
+```bash
 python sorting.py
 
 [14, 33, 27, 10, 35, 19, 42, 44]

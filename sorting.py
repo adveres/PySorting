@@ -7,6 +7,8 @@ This is for fun, and so I can easily remind myself about the algorithms with my 
 import argparse
 import datetime
 
+from prettytable import PrettyTable
+
 from algorithms.bubble_sort import bubble_sort
 from algorithms.insertion_sort import insertion_sort
 from algorithms.merge_sort import merge_sort
@@ -26,7 +28,11 @@ def main(algo):
     Main
     """
     for unsorted in ALL_SORTABLES:
-        print(unsorted)
+        print(f"Task: {unsorted}")
+
+        table = PrettyTable()
+        table.field_names = ["Algorithm", "Pass?", "Iterations", "Time"]
+        table.align["Algorithm"] = "l"
 
         for sorter in sorters:
             if algo is not None and algo != sorter.__name__:
@@ -36,15 +42,19 @@ def main(algo):
             start = datetime.datetime.now()
             iters, sorted_list = sorter(list(unsorted))
             time_delta = datetime.datetime.now() - start
+            passed = sorted_list == sorted(unsorted)
 
-            # Make sure it even worked.
-            if sorted_list != sorted(unsorted):
-                print(f"    FAILURE!!! {sorter.__name__} did not successfully sort {unsorted}.")
-                print(f"        Got: {sorted_list}")
-            else:
-                print(f"    {sorter.__name__: <14} sorted in {iters: <3} iterations and took: {time_delta}")
+            table.add_row([sorter.__name__, passed, f"{iters: <3}", time_delta])
 
+        print(table)
         print("")
+
+
+def to_table():
+    table = PrettyTable()
+    table.field_names = ["Algorithm", "Pass?", "Iterations", "Time Delta"]
+
+    pass
 
 
 if __name__ == "__main__":
